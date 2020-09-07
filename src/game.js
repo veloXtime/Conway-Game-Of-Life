@@ -3,10 +3,10 @@ function Game (targetElement, height, width) {
     this.canvas = document.getElementById(targetElement);
     this.canvas.width = width;
     this.canvas.height = height;
-    this.canvas.style = 'border:solid 2px SteelBlue;';
+    this.canvas.style = 'border:solid 2px black;';
     this.context = this.canvas.getContext('2d');
 
-    this.sideLength = 30;
+    this.sideLength = 10;
 
     this.rows = height / this.sideLength;
     this.cols = width / this.sideLength;
@@ -50,9 +50,6 @@ function Game (targetElement, height, width) {
     
 };
 
-
-
-
 Game.prototype.update = function() {
     this.grid.updateStatus();
 }
@@ -77,8 +74,8 @@ Game.prototype.displayOut = function(){
 
     let sl = this.sideLength;
 
-    this.context.fillStyle = 'SteelBlue';
-    this.context.strokeStyle = "SteelBlue";
+    this.context.fillStyle = 'black';
+    this.context.strokeStyle = "gray";
     for (let i = this.sideLength; i < this.canvas.width; i+= this.sideLength) {
         this.context.beginPath();
         this.context.moveTo(i, 0);
@@ -100,8 +97,34 @@ Game.prototype.displayOut = function(){
     }
 };
 
+Game.prototype.resetGrid = function() {
+    this.grid = new Grid(this.rows, this.cols);
+}
 
-let g = new Game("thiscanvas", 900, 1500);
+
+
+
+let g = new Game("thiscanvas", 500, 800);
+
+document.getElementById("startButton").onclick = function() {
+    g.startSim = !g.startSim;
+    if (g.startSim) {
+        document.getElementById("startButton").innerHTML = "pause";
+    }
+    else {
+        document.getElementById("startButton").innerHTML = "start";
+    }
+};
+
+document.getElementById("clearButton").onclick = function() {
+    g.resetGrid();
+};
+
+document.getElementById("stepButton").onclick = function() {
+    g.update();
+}
+
+
 g.displayOut();
 setInterval(function() {
     if (g.startSim) {
